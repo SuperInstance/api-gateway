@@ -1,0 +1,9 @@
+[package]
+name = "api-gateway"
+version = "0.1.0"
+description = "A Rust library for Api Gateway"
+license = "MIT OR Apache-2.0"
+repository = "https://github.com/casey-digennaro/api-gateway"
+edition = "2021"
+
+[dependencies]
