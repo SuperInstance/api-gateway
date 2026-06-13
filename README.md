@@ -60,6 +60,10 @@ The API Gateway is the **η-layer ingress point** in the SuperInstance fleet. It
 
 See [ARCHITECTURE.md](https://github.com/SuperInstance/SuperInstance/blob/main/ARCHITECTURE.md).
 
+**Rate limiting algorithm:** The gateway uses a token bucket per client IP. The bucket has capacity C = 100 tokens and refills at rate r = 10 tokens/minute. Each request consumes 1 token. If the bucket is empty, the request is rejected with HTTP 429 (Too Many Requests). This algorithm allows burst traffic (up to C requests instantly) while maintaining a steady-state rate of r requests/minute. The token bucket is O(1) per request: one timestamp comparison and one integer decrement.
+
+**Observability:** Every request logs method, path, status, latency, and upstream to the fleet metrics pipeline. The p50/p95/p99 latency percentiles are tracked via a fixed-size circular histogram, enabling real-time SLO monitoring without storing individual request logs.
+
 ## References
 
 1. Newman, S. (2021). *Building Microservices*. 2nd ed. O'Reilly. Chapter 8: The API Gateway Pattern.
